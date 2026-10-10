@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-primary: #38BDF8;
+    --brand-secondary: #F472B6;
+    --brand-pink: #F472B6;
+    --brand-cyan: #38BDF8;
+    --brand-yellow: #FDE047;
+    --brand-peach: #FB923C;
+    --bg-light: #F0F9FF;
+    --bg-light-surface: #FFFFFF;
+    --bg-light-card: #FFFFFF;
+    --bg-light-border: #BAE6FD;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #E0F2FE;
+    background-image: 
+      radial-gradient(at 10% 20%, rgba(244, 114, 182, 0.15) 0px, transparent 50%),
+      radial-gradient(at 90% 80%, rgba(56, 189, 248, 0.25) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(254, 240, 138, 0.12) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #0F172A;
+  }
+
+  h1, h2, h3, .font-heading {
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+/* Custom kawaii hanging card & dashed borders */
+.kawaii-card {
+  background: #FFFFFF;
+  border: 3px dashed #7DD3FC;
+  border-radius: 2rem;
+  box-shadow: 0 16px 32px -8px rgba(56, 189, 248, 0.2), 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.kawaii-input {
+  background-color: #F0F9FF;
+  border: 2px solid #BAE6FD;
+  border-radius: 1.25rem;
+  color: #0F172A;
+  transition: all 0.2s ease;
+}
+
+.kawaii-input:focus {
+  outline: none;
+  border-color: #38BDF8;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+.kawaii-btn-primary {
+  background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
+  color: #FFFFFF;
+  border: 2px solid #BAE6FD;
+  border-radius: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 6px 14px -2px rgba(2, 132, 199, 0.35);
+  transition: all 0.2s ease;
+}
+
+.kawaii-btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px -2px rgba(2, 132, 199, 0.45);
+}
+
+.kawaii-btn-pink {
+  background: linear-gradient(135deg, #F472B6 0%, #DB2777 100%);
+  color: #FFFFFF;
+  border: 2px solid #FBCFE8;
+  border-radius: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 6px 14px -2px rgba(219, 39, 119, 0.35);
+  transition: all 0.2s ease;
+}
+
+.kawaii-btn-pink:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px -2px rgba(219, 39, 119, 0.45);
+}
+
+/* Custom glowing effects and scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #E0F2FE;
+}
+::-webkit-scrollbar-thumb {
+  background: #38BDF8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0284C7;
+}
+
+@keyframes floatCute {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateY(-60px) scale(1.2) rotate(12deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-130px) scale(1.35) rotate(-12deg);
+  }
+}
+
+.animate-float-cute {
+  animation: floatCute 1.4s ease-out forwards;
+}
+
+@keyframes wiggleCute {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggleCute 0.3s ease-in-out infinite;
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 2.5s ease-in-out infinite;
+}

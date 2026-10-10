@@ -1,0 +1,6 @@
+{
+  "name": "VYBE - Social Experience Platform",
+  "description": "Create fun quizzes, discover who knows you best, collect anonymous answers, and vote in polls. Powered by Y Series.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
