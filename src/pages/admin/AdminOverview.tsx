@@ -41,7 +41,7 @@ export function AdminOverview() {
         <h2 className="font-heading font-extrabold text-2xl text-slate-900 dark:text-white">
           Platform Administration Overview
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
           Real-time database statistics and moderation activity.
         </p>
       </div>
@@ -49,62 +49,62 @@ export function AdminOverview() {
       {/* Primary Metrics Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Registered Users</div>
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Registered Users</div>
           <div className="font-heading text-2xl font-black text-slate-900 dark:text-white mt-1">
             {m.total_users || 0}
           </div>
-          <div className="text-[11px] text-emerald-400 mt-1">{m.active_users} active accounts</div>
+          <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-bold mt-1">{m.active_users} active accounts</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Total Experiences</div>
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Total Experiences</div>
           <div className="font-heading text-2xl font-black text-slate-900 dark:text-white mt-1">
             {m.total_experiences || 0}
           </div>
-          <div className="text-[11px] text-purple-400 mt-1">{m.published_experiences} published</div>
+          <div className="text-[11px] text-purple-700 dark:text-purple-400 font-bold mt-1">{m.published_experiences} published</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Quiz Submissions</div>
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Quiz Submissions</div>
           <div className="font-heading text-2xl font-black text-slate-900 dark:text-white mt-1">
             {m.total_quiz_submissions || 0}
           </div>
-          <div className="text-[11px] text-purple-400 mt-1">Calculated server-side</div>
+          <div className="text-[11px] text-purple-700 dark:text-purple-400 font-bold mt-1">Calculated server-side</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Open Reports</div>
-          <div className="font-heading text-2xl font-black text-rose-500 mt-1">
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Open Reports</div>
+          <div className="font-heading text-2xl font-black text-rose-600 mt-1">
             {m.open_reports || 0}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1">Requiring safety review</div>
+          <div className="text-[11px] text-rose-700 dark:text-rose-400 font-bold mt-1">Requiring safety review</div>
         </div>
       </div>
 
       {/* Secondary Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Anonymous Responses</div>
-          <div className="font-heading text-xl font-bold text-pink-400 mt-1">
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Anonymous Responses</div>
+          <div className="font-heading text-xl font-bold text-pink-600 dark:text-pink-400 mt-1">
             {m.total_anonymous_responses || 0}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1">Mode A & Mode B records</div>
+          <div className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold mt-1">Mode A & Mode B records</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Poll Votes Recorded</div>
-          <div className="font-heading text-xl font-bold text-cyan-400 mt-1">
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Poll Votes Recorded</div>
+          <div className="font-heading text-xl font-bold text-cyan-700 dark:text-cyan-400 mt-1">
             {m.total_poll_votes || 0}
           </div>
-          <div className="text-[11px] text-slate-400 mt-1">Validated vote records</div>
+          <div className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold mt-1">Validated vote records</div>
         </div>
 
         <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-          <div className="text-xs text-slate-500">Quizzes vs Anon vs Polls</div>
-          <div className="font-heading text-sm font-bold text-slate-800 dark:text-slate-200 mt-1">
+          <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">Quizzes vs Anon vs Polls</div>
+          <div className="font-heading text-sm font-bold text-slate-900 dark:text-slate-200 mt-1">
             {m.quizzes_count} Q · {m.anonymous_count} A · {m.polls_count} P
           </div>
-          <div className="text-[11px] text-slate-400 mt-1">Format distribution</div>
+          <div className="text-[11px] text-slate-700 dark:text-slate-300 font-semibold mt-1">Format distribution</div>
         </div>
       </div>
 

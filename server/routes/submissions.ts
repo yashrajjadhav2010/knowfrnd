@@ -4,6 +4,7 @@ import {
   dbGetQuestionsForExperience,
   dbGetPrivateAnswerKeys,
   dbCreateQuizSubmission,
+  dbGetQuizSubmissionsForExperience,
   dbCreateAnonymousResponse,
   dbGetPollForExperience,
   dbGetPollVotes,
@@ -19,6 +20,11 @@ submissionsRouter.post('/quiz/:id/submit', async (req: Request, res: Response) =
   try {
     const { id } = req.params;
     const { participant_name, answers, submission_token } = req.body;
+
+    const trimmedName = typeof participant_name === 'string' ? participant_name.trim() : '';
+    if (!trimmedName) {
+      return res.status(400).json({ error: 'Participant name is compulsory for safety and admin audit purposes. Please enter your name.' });
+    }
 
     const exp = await dbGetExperienceBySlugOrId(id);
     if (!exp || exp.type !== 'quiz') {
@@ -68,7 +74,7 @@ submissionsRouter.post('/quiz/:id/submit', async (req: Request, res: Response) =
     const submissionRecord = {
       id: subId,
       experienceId: exp.id,
-      participantDisplayName: (participant_name || 'Anonymous Friend').trim().substring(0, 40),
+      participantDisplayName: trimmedName.substring(0, 50),
       score: correctCount,
       totalQuestions,
       percentage,
@@ -138,6 +144,48 @@ submissionsRouter.post('/quiz/:id/submit', async (req: Request, res: Response) =
   }
 });
 
+// GET /api/submissions/quiz/:id/scoreboard (Public Live Scoreboard)
+submissionsRouter.get('/quiz/:id/scoreboard', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const exp = await dbGetExperienceBySlugOrId(id);
+    if (!exp || exp.type !== 'quiz') {
+      return res.status(404).json({ error: 'Quiz not found' });
+    }
+
+    const subs = await dbGetQuizSubmissionsForExperience(exp.id);
+
+    // Sort by percentage descending, then total score descending, then earlier submission
+    const sorted = [...subs].sort((a, b) => {
+      if (b.percentage !== a.percentage) return b.percentage - a.percentage;
+      if (b.score !== a.score) return b.score - a.score;
+      return new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime();
+    });
+
+    const scoreboard = sorted.map((s, idx) => ({
+      rank: idx + 1,
+      id: s.id,
+      participant_name: s.participantDisplayName,
+      score: s.score,
+      total_questions: s.totalQuestions,
+      percentage: s.percentage,
+      submitted_at: s.submittedAt.toISOString(),
+      submission_reference: s.submissionReference,
+    }));
+
+    res.json({
+      success: true,
+      quiz_title: exp.title,
+      creator_name: (exp.settings as any)?.creator_name || 'Bestie',
+      total_participants: scoreboard.length,
+      scoreboard,
+    });
+  } catch (err: any) {
+    console.error('Quiz scoreboard error:', err);
+    res.status(500).json({ error: err.message || 'Failed to load quiz scoreboard' });
+  }
+});
+
 // ==============================================================================
 // 2. ANONYMOUS QUESTIONS SUBMISSION
 // ==============================================================================
@@ -145,6 +193,11 @@ submissionsRouter.post('/anonymous/:id/submit', async (req: Request, res: Respon
   try {
     const { id } = req.params;
     const { answers, responder_name, consent_given } = req.body;
+
+    const trimmedName = typeof responder_name === 'string' ? responder_name.trim() : '';
+    if (!trimmedName) {
+      return res.status(400).json({ error: 'Responder name is compulsory for safety and moderation audit purposes. Please enter your name.' });
+    }
 
     const exp = await dbGetExperienceBySlugOrId(id);
     if (!exp || exp.type !== 'anonymous') {
@@ -182,16 +235,13 @@ submissionsRouter.post('/anonymous/:id/submit', async (req: Request, res: Respon
     const responseId = `anon_res_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
     const responseRef = `anon_${Math.random().toString(36).substring(2, 10)}`;
 
-    const identityData =
-      exp.privacyMode === 'mode_a' && responder_name && responder_name.trim().length > 0 && consent_given
-        ? {
-            id: `identity_${Date.now()}`,
-            responseId,
-            responderName: responder_name.trim().substring(0, 50),
-            consentGiven: true,
-            consentNotice: 'Responder voluntarily disclosed name to platform for moderation purposes. Creator cannot view.',
-          }
-        : undefined;
+    const identityData = {
+      id: `identity_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      responseId,
+      responderName: trimmedName.substring(0, 50),
+      consentGiven: true,
+      consentNotice: 'Compulsory responder name verified for platform safety audit and administrator panel review. Kept hidden from public creator.',
+    };
 
     await dbCreateAnonymousResponse(
       {
@@ -222,7 +272,13 @@ submissionsRouter.post('/anonymous/:id/submit', async (req: Request, res: Respon
 submissionsRouter.post('/poll/:id/vote', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { selected_option, voter_reference } = req.body;
+    const { selected_option, voter_reference, voter_name, responder_name } = req.body;
+
+    const nameCandidate = voter_name || responder_name;
+    const trimmedName = typeof nameCandidate === 'string' ? nameCandidate.trim() : '';
+    if (!trimmedName) {
+      return res.status(400).json({ error: 'Voter name is compulsory for poll voting and safety audit purposes. Please enter your name.' });
+    }
 
     const exp = await dbGetExperienceBySlugOrId(id);
     if (!exp || exp.type !== 'poll') {
@@ -242,10 +298,13 @@ submissionsRouter.post('/poll/:id/vote', async (req: Request, res: Response) => 
       return res.status(400).json({ error: 'Invalid vote selection. Choose option A or B.' });
     }
 
-    const voterRef = voter_reference || `voter_${req.ip || 'anon'}_${Math.random().toString(36).substring(2, 6)}`;
+    const rawRef = voter_reference || `v_${Math.random().toString(36).substring(2, 8)}`;
+    const voterRecordRef = `${trimmedName} (ref_${rawRef})`;
 
     const currentVotes = await dbGetPollVotes(poll.id);
-    const existingVote = currentVotes.find((v) => v.voterReference === voterRef);
+    const existingVote = currentVotes.find(
+      (v) => v.voterReference.includes(rawRef) || v.voterReference.toLowerCase().startsWith(trimmedName.toLowerCase() + ' ')
+    );
     if (existingVote) {
       const votesA = currentVotes.filter((v) => v.selectedOption === 'A').length;
       const votesB = currentVotes.filter((v) => v.selectedOption === 'B').length;
@@ -268,7 +327,7 @@ submissionsRouter.post('/poll/:id/vote', async (req: Request, res: Response) => 
       id: `vote_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       pollId: poll.id,
       selectedOption: selected_option,
-      voterReference: voterRef,
+      voterReference: voterRecordRef,
     });
 
     const updatedVotes = await dbGetPollVotes(poll.id);

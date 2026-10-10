@@ -107,20 +107,20 @@ export function DashboardResponses() {
               {/* Summary Stats */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-                  <span className="text-xs text-slate-500">Total Friends Tested</span>
+                  <span className="text-xs text-slate-800 dark:text-slate-300 font-bold">Total Friends Tested</span>
                   <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                     {responseDetails.summary?.total_submissions || 0}
                   </div>
                 </div>
                 <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-                  <span className="text-xs text-slate-500">Average Score</span>
-                  <div className="text-2xl font-black text-purple-500 mt-1">
+                  <span className="text-xs text-slate-800 dark:text-slate-300 font-bold">Average Score</span>
+                  <div className="text-2xl font-black text-purple-700 dark:text-purple-400 mt-1">
                     {responseDetails.summary?.average_score || 0}%
                   </div>
                 </div>
                 <div className="p-4 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-                  <span className="text-xs text-slate-500">Highest Score</span>
-                  <div className="text-2xl font-black text-pink-500 mt-1">
+                  <span className="text-xs text-slate-800 dark:text-slate-300 font-bold">Highest Score</span>
+                  <div className="text-2xl font-black text-pink-600 dark:text-pink-400 mt-1">
                     {responseDetails.summary?.highest_score || 0}%
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export function DashboardResponses() {
 
               {/* Submissions Table */}
               <div className="p-6 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm">
-                <h3 className="font-heading font-bold text-sm text-slate-900 dark:text-white mb-4">
+                <h3 className="font-heading font-black text-sm text-slate-900 dark:text-white mb-4">
                   Leaderboard & Submissions
                 </h3>
 
@@ -136,26 +136,28 @@ export function DashboardResponses() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                       <thead>
-                        <tr className="border-b border-slate-200 dark:border-[#272542] text-slate-400">
-                          <th className="pb-3 font-semibold">Friend Nickname</th>
-                          <th className="pb-3 font-semibold">Score</th>
-                          <th className="pb-3 font-semibold">Percentage</th>
-                          <th className="pb-3 font-semibold">Date Submitted</th>
+                        <tr className="border-b-2 border-slate-200 dark:border-[#272542] text-slate-900 dark:text-slate-200 font-black">
+                          <th className="pb-3 font-extrabold">Friend Nickname</th>
+                          <th className="pb-3 font-extrabold">Score</th>
+                          <th className="pb-3 font-extrabold">Percentage</th>
+                          <th className="pb-3 font-extrabold">Date Submitted</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 dark:divide-[#272542]/50">
                         {responseDetails.submissions.map((sub: any) => (
                           <tr key={sub.id} className="hover:bg-slate-50/50 dark:hover:bg-[#1a192e]/40">
-                            <td className="py-3 font-medium text-slate-800 dark:text-slate-200">
+                            <td className="py-3 font-black text-slate-900 dark:text-slate-100">
                               {sub.participant_name || 'Anonymous Friend'}
                             </td>
-                            <td className="py-3 font-semibold text-purple-400">
+                            <td className="py-3 font-extrabold text-purple-700 dark:text-purple-300">
                               {sub.score} / {sub.total_questions}
                             </td>
-                            <td className="py-3 font-bold text-slate-900 dark:text-white">
-                              {sub.percentage}%
+                            <td className="py-3 font-black text-slate-900 dark:text-white">
+                              <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 font-black border border-purple-200">
+                                {sub.percentage}%
+                              </span>
                             </td>
-                            <td className="py-3 text-slate-400">
+                            <td className="py-3 text-slate-700 dark:text-slate-300 font-semibold">
                               {new Date(sub.submitted_at).toLocaleDateString()}
                             </td>
                           </tr>
@@ -164,7 +166,7 @@ export function DashboardResponses() {
                     </table>
                   </div>
                 ) : (
-                  <p className="text-xs text-slate-400 py-6 text-center">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold py-6 text-center">
                     No submissions received yet. Share your quiz link with friends!
                   </p>
                 )}
@@ -179,14 +181,14 @@ export function DashboardResponses() {
           {responseDetails.type === 'anonymous' && (
             <div className="space-y-6">
               {/* Privacy Notice Banner */}
-              <div className="p-4 rounded-2xl bg-pink-950/20 border border-pink-500/30 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-pink-300">
-                  <ShieldCheck className="w-4 h-4 shrink-0 text-pink-400" />
+              <div className="p-4 rounded-2xl bg-pink-100 dark:bg-pink-950/40 border border-pink-300 dark:border-pink-500/30 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2 text-pink-950 dark:text-pink-200 font-semibold">
+                  <ShieldCheck className="w-4 h-4 shrink-0 text-pink-600 dark:text-pink-400" />
                   <span>
-                    <strong>Anonymity Protection Active:</strong> Responders are protected by platform privacy rules. Identities are never disclosed to creators.
+                    <strong className="font-black text-pink-900 dark:text-pink-300">Anonymity Protection Active:</strong> Responders are protected by platform privacy rules. Identities are never disclosed to creators.
                   </span>
                 </div>
-                <span className="text-[11px] font-semibold text-pink-400 shrink-0">
+                <span className="text-[11px] font-bold text-pink-800 dark:text-pink-400 shrink-0">
                   {responseDetails.summary?.total_responses || 0} Responses
                 </span>
               </div>
@@ -199,7 +201,7 @@ export function DashboardResponses() {
                       key={r.id}
                       className="p-5 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm space-y-3"
                     >
-                      <div className="flex items-center justify-between text-[11px] text-slate-400 pb-2 border-b border-slate-100 dark:border-[#272542]/50">
+                      <div className="flex items-center justify-between text-[11px] text-slate-700 dark:text-slate-300 font-semibold pb-2 border-b border-slate-100 dark:border-[#272542]/50">
                         <span className="font-mono">Ref: {r.response_reference}</span>
                         <span>{new Date(r.submitted_at).toLocaleString()}</span>
                       </div>
@@ -207,10 +209,10 @@ export function DashboardResponses() {
                       <div className="space-y-3">
                         {r.answers?.map((ans: any, idx: number) => (
                           <div key={idx} className="space-y-1">
-                            <div className="text-[11px] font-semibold text-purple-400">
+                            <div className="text-[11px] font-black text-purple-800 dark:text-purple-300">
                               Q: {ans.question_text || `Question #${idx + 1}`}
                             </div>
-                            <p className="text-xs text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-[#0B0B12] p-3 rounded-xl border border-slate-100 dark:border-[#272542]">
+                            <p className="text-xs text-slate-900 dark:text-slate-200 bg-slate-50 dark:bg-[#0B0B12] p-3 rounded-xl border border-slate-200 dark:border-[#272542] font-semibold italic">
                               "{ans.response_text || 'No text provided'}"
                             </p>
                           </div>
@@ -220,7 +222,7 @@ export function DashboardResponses() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-16 text-xs text-slate-400 border border-dashed border-slate-200 dark:border-[#272542] rounded-2xl">
+                <div className="text-center py-16 text-xs text-slate-700 dark:text-slate-300 font-bold border border-dashed border-slate-200 dark:border-[#272542] rounded-2xl">
                   No anonymous responses received yet.
                 </div>
               )}
@@ -234,41 +236,41 @@ export function DashboardResponses() {
             <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] shadow-sm space-y-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-heading font-bold text-sm text-slate-900 dark:text-white">
+                  <h3 className="font-heading font-black text-sm text-slate-900 dark:text-white">
                     Live Vote Distribution
                   </h3>
-                  <span className="text-xs text-cyan-400 font-semibold">
+                  <span className="text-xs text-cyan-800 dark:text-cyan-300 font-black">
                     Total Votes: {responseDetails.poll?.total_votes || 0}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 space-y-2">
-                    <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">
+                  <div className="p-5 rounded-2xl bg-cyan-50 dark:bg-cyan-500/10 border-2 border-cyan-200 dark:border-cyan-500/30 space-y-2">
+                    <span className="text-[11px] font-black text-cyan-800 dark:text-cyan-300 uppercase tracking-wider">
                       Choice A
                     </span>
-                    <div className="font-heading font-bold text-base text-white">
+                    <div className="font-heading font-extrabold text-base text-slate-900 dark:text-white leading-snug">
                       {responseDetails.poll?.option_a}
                     </div>
-                    <div className="text-3xl font-black text-cyan-400 font-heading">
+                    <div className="text-3xl font-black text-cyan-800 dark:text-cyan-400 font-heading">
                       {responseDetails.poll?.percent_a}%
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">
                       {responseDetails.poll?.votes_a} votes
                     </div>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-2">
-                    <span className="text-[11px] font-bold text-purple-400 uppercase tracking-wider">
+                  <div className="p-5 rounded-2xl bg-purple-50 dark:bg-purple-500/10 border-2 border-purple-200 dark:border-purple-500/30 space-y-2">
+                    <span className="text-[11px] font-black text-purple-800 dark:text-purple-300 uppercase tracking-wider">
                       Choice B
                     </span>
-                    <div className="font-heading font-bold text-base text-white">
+                    <div className="font-heading font-extrabold text-base text-slate-900 dark:text-white leading-snug">
                       {responseDetails.poll?.option_b}
                     </div>
-                    <div className="text-3xl font-black text-purple-400 font-heading">
+                    <div className="text-3xl font-black text-purple-800 dark:text-purple-400 font-heading">
                       {responseDetails.poll?.percent_b}%
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-xs text-slate-800 dark:text-slate-300 font-bold">
                       {responseDetails.poll?.votes_b} votes
                     </div>
                   </div>

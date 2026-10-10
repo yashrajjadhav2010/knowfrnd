@@ -70,35 +70,35 @@ export function DashboardOverview() {
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="p-5 rounded-3xl bg-white border-2 border-purple-100 shadow-sm hover:border-pink-200 transition-all">
-          <div className="text-xs font-bold text-slate-500 mb-1">Total Created</div>
+          <div className="text-xs font-black text-slate-800 mb-1">Total Created</div>
           <div className="font-heading text-2xl font-black text-slate-900">
             {metrics.total_experiences}
           </div>
-          <div className="text-[11px] font-bold text-purple-600 mt-1">
+          <div className="text-[11px] font-black text-purple-700 mt-1">
             {metrics.published_experiences} published
           </div>
         </div>
 
         <div className="p-5 rounded-3xl bg-white border-2 border-pink-100 shadow-sm hover:border-pink-300 transition-all">
-          <div className="text-xs font-bold text-slate-500 mb-1">Responses Received</div>
+          <div className="text-xs font-black text-slate-800 mb-1">Responses Received</div>
           <div className="font-heading text-2xl font-black text-slate-900">
             {metrics.total_responses}
           </div>
-          <div className="text-[11px] font-bold text-pink-600 mt-1">Real database records</div>
+          <div className="text-[11px] font-black text-pink-700 mt-1">Real database records</div>
         </div>
 
         <div className="p-5 rounded-3xl bg-white border-2 border-cyan-100 shadow-sm hover:border-cyan-300 transition-all">
-          <div className="text-xs font-bold text-slate-500 mb-1">Average Score</div>
+          <div className="text-xs font-black text-slate-800 mb-1">Average Score</div>
           <div className="font-heading text-2xl font-black text-slate-900">
             {metrics.average_quiz_score}%
           </div>
-          <div className="text-[11px] font-bold text-cyan-600 mt-1">Across all friend quizzes</div>
+          <div className="text-[11px] font-black text-cyan-700 mt-1">Across all friend quizzes</div>
         </div>
 
         <div className="p-5 rounded-3xl bg-white border-2 border-emerald-100 shadow-sm hover:border-emerald-300 transition-all">
-          <div className="text-xs font-bold text-slate-500 mb-1">Account Standing</div>
-          <div className="font-heading text-lg font-black text-emerald-600">Active ✨</div>
-          <div className="text-[11px] font-medium text-slate-500 mt-1">Creator Tier</div>
+          <div className="text-xs font-black text-slate-800 mb-1">Account Standing</div>
+          <div className="font-heading text-lg font-black text-emerald-700">Active ✨</div>
+          <div className="text-[11px] font-black text-slate-700 mt-1">Creator Tier</div>
         </div>
       </div>
 

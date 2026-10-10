@@ -114,18 +114,18 @@ export function ExplorePage() {
               className="p-6 rounded-3xl bg-white border-2 border-purple-100 hover:border-pink-300 hover:shadow-lg hover:shadow-pink-500/10 transition-all flex flex-col justify-between shadow-sm group"
             >
               <div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
-                  <span className="font-extrabold uppercase tracking-wider text-pink-600">
+                <div className="flex items-center gap-2 text-xs text-slate-700 font-bold mb-2">
+                  <span className="font-extrabold uppercase tracking-wider text-pink-700">
                     {exp.type}
                   </span>
                   <span aria-hidden="true">·</span>
-                  <span className="font-medium">{exp.response_count} responses</span>
+                  <span className="font-bold text-slate-800">{exp.response_count} responses</span>
                 </div>
 
                 <h3 className="font-heading font-extrabold text-base text-slate-900 line-clamp-1 group-hover:text-purple-600 transition-colors">
                   {exp.title}
                 </h3>
-                <p className="text-xs text-slate-600 line-clamp-2 mt-1.5 leading-relaxed font-normal">
+                <p className="text-xs text-slate-800 line-clamp-2 mt-1.5 leading-relaxed font-semibold">
                   {exp.description}
                 </p>
               </div>
@@ -135,7 +135,7 @@ export function ExplorePage() {
                   <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-pink-400 to-purple-500 text-white flex items-center justify-center text-[10px] font-black shadow-sm">
                     {exp.creator?.public_display_name?.charAt(0) || 'U'}
                   </div>
-                  <span className="text-xs text-slate-700 font-bold">
+                  <span className="text-xs text-slate-900 font-black">
                     {exp.creator?.public_display_name}
                   </span>
                 </div>

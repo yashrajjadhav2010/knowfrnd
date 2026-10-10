@@ -160,11 +160,11 @@ export function LandingPage() {
                       type="text"
                       readOnly
                       value="Your Name: e.g. Alex"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 border border-slate-200 text-slate-500 font-medium select-none"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-sky-50/60 border-2 border-sky-200 text-slate-800 font-bold select-none"
                     />
                     <Link
                       to="/create?type=quiz"
-                      className="px-4 py-2 rounded-xl text-xs font-bold bg-sky-500 text-white shadow-sm shrink-0 hover:bg-sky-600 transition-colors"
+                      className="px-4 py-2 rounded-xl text-xs font-black bg-sky-500 text-white shadow-sm shrink-0 hover:bg-sky-600 transition-colors cursor-pointer"
                     >
                       Play / Make
                     </Link>
@@ -298,22 +298,22 @@ export function LandingPage() {
                   className="p-6 rounded-3xl bg-white border-2 border-purple-100 hover:border-pink-300 transition-all flex flex-col justify-between shadow-sm"
                 >
                   <div>
-                    <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                      <span className="uppercase font-bold tracking-wider text-pink-600">
+                    <div className="flex items-center justify-between text-xs text-slate-700 font-bold mb-2">
+                      <span className="uppercase font-black tracking-wider text-pink-600">
                         {exp.type}
                       </span>
-                      <span className="font-medium">{exp.response_count} responses</span>
+                      <span className="font-semibold text-slate-700">{exp.response_count} responses</span>
                     </div>
                     <h3 className="font-heading font-extrabold text-base text-slate-900 line-clamp-1 mb-1">
                       {exp.title}
                     </h3>
-                    <p className="text-xs text-slate-600 line-clamp-2">
+                    <p className="text-xs text-slate-700 font-medium line-clamp-2">
                       {exp.description}
                     </p>
                   </div>
 
                   <div className="pt-4 border-t border-slate-100 flex items-center justify-between mt-4">
-                    <span className="text-xs text-slate-500 font-medium">
+                    <span className="text-xs text-slate-700 font-bold">
                       by {exp.creator?.public_display_name || 'Creator'}
                     </span>
                     <Link

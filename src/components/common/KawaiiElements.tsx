@@ -129,10 +129,10 @@ export function GinghamRibbon({ title = "KNOW YOUR FRIEND'S QUIZ" }: { title?: s
       </div>
 
       {/* Plaid / Gingham style Ribbon badge */}
-      <div className="relative px-6 py-2 rounded-2xl bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 text-white font-extrabold text-sm sm:text-base tracking-wide shadow-md border-2 border-white flex items-center gap-2">
-        <span className="text-yellow-200 text-xs">★</span>
-        <span className="drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)] uppercase">{title}</span>
-        <span className="text-yellow-200 text-xs">★</span>
+      <div className="relative px-6 py-2.5 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-600 to-sky-500 text-white font-black text-sm sm:text-base tracking-wider shadow-lg border-2 border-white flex items-center gap-2">
+        <span className="text-yellow-300 text-sm">★</span>
+        <span className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.35)] uppercase tracking-wide">{title}</span>
+        <span className="text-yellow-300 text-sm">★</span>
       </div>
     </div>
   );

@@ -72,12 +72,14 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
+  getQuizScoreboard: (id: string) =>
+    request<{ success: boolean; quiz_title: string; creator_name: string; total_participants: number; scoreboard: any[] }>(`/quiz/${id}/scoreboard`),
   submitAnonymous: (id: string, data: { answers: any[]; responder_name?: string; consent_given?: boolean }) =>
     request<{ success: boolean; message: string; response_reference: string; privacy_mode: string }>(`/anonymous/${id}/submit`, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
-  votePoll: (id: string, data: { selected_option: 'A' | 'B'; voter_reference?: string }) =>
+  votePoll: (id: string, data: { selected_option: 'A' | 'B'; voter_name?: string; responder_name?: string; voter_reference?: string }) =>
     request<{ success: boolean; already_voted: boolean; user_selection: string; tally: any }>(`/poll/${id}/vote`, {
       method: 'POST',
       body: JSON.stringify(data),

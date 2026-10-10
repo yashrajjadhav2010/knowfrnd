@@ -259,34 +259,34 @@ export function PookieNameGenerator() {
 
           {/* Stat Bars */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 pt-4 border-t border-pink-200/80">
-            <div className="p-2.5 rounded-xl bg-white/80 border border-pink-200">
-              <div className="text-[10px] text-slate-500 font-semibold">Sweetness</div>
-              <div className="font-heading font-bold text-sm text-pink-600">{generatedCard.stats.sweetness}%</div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+            <div className="p-2.5 rounded-xl bg-white/90 border border-pink-200">
+              <div className="text-[10px] text-slate-800 font-black">Sweetness</div>
+              <div className="font-heading font-black text-sm text-pink-700">{generatedCard.stats.sweetness}%</div>
+              <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
                 <div className="bg-pink-500 h-1.5 rounded-full" style={{ width: `${generatedCard.stats.sweetness}%` }} />
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-white/80 border border-purple-200">
-              <div className="text-[10px] text-slate-500 font-semibold">Chaos Level</div>
-              <div className="font-heading font-bold text-sm text-purple-600">{generatedCard.stats.chaos}%</div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+            <div className="p-2.5 rounded-xl bg-white/90 border border-purple-200">
+              <div className="text-[10px] text-slate-800 font-black">Chaos Level</div>
+              <div className="font-heading font-black text-sm text-purple-700">{generatedCard.stats.chaos}%</div>
+              <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
                 <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${generatedCard.stats.chaos}%` }} />
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-white/80 border border-rose-200">
-              <div className="text-[10px] text-slate-500 font-semibold">Bestie Loyalty</div>
-              <div className="font-heading font-bold text-sm text-rose-600">{generatedCard.stats.loyalty}%</div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+            <div className="p-2.5 rounded-xl bg-white/90 border border-rose-200">
+              <div className="text-[10px] text-slate-800 font-black">Bestie Loyalty</div>
+              <div className="font-heading font-black text-sm text-rose-700">{generatedCard.stats.loyalty}%</div>
+              <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
                 <div className="bg-rose-500 h-1.5 rounded-full" style={{ width: `${generatedCard.stats.loyalty}%` }} />
               </div>
             </div>
 
-            <div className="p-2.5 rounded-xl bg-white/80 border border-cyan-200">
-              <div className="text-[10px] text-slate-500 font-semibold">Snack Affinity</div>
-              <div className="font-heading font-bold text-sm text-cyan-600">{generatedCard.stats.snackDesire}%</div>
-              <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1 overflow-hidden">
+            <div className="p-2.5 rounded-xl bg-white/90 border border-cyan-200">
+              <div className="text-[10px] text-slate-800 font-black">Snack Affinity</div>
+              <div className="font-heading font-black text-sm text-cyan-700">{generatedCard.stats.snackDesire}%</div>
+              <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1 overflow-hidden">
                 <div className="bg-cyan-500 h-1.5 rounded-full" style={{ width: `${generatedCard.stats.snackDesire}%` }} />
               </div>
             </div>

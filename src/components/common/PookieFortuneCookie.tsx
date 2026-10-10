@@ -124,7 +124,7 @@ export function PookieFortuneCookie() {
                 Crack Me!
               </span>
             </h3>
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-700 font-semibold">
               Tap the cookie to unlock your daily secret vibe or bestie dare
             </p>
           </div>
@@ -133,7 +133,7 @@ export function PookieFortuneCookie() {
         {isCracked && (
           <button
             onClick={resetCookie}
-            className="px-3 py-1.5 rounded-xl bg-white border border-pink-200 hover:border-pink-300 text-pink-600 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 hover:scale-105"
+            className="px-3 py-1.5 rounded-xl bg-white border-2 border-pink-200 hover:border-pink-300 text-pink-700 text-xs font-black transition-all shadow-sm flex items-center gap-1.5 hover:scale-105 cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Crack Another</span>
@@ -147,19 +147,19 @@ export function PookieFortuneCookie() {
           <div className="text-center space-y-4">
             <button
               onClick={crackCookie}
-              className={`group relative p-8 rounded-3xl bg-white/90 border-2 border-dashed border-amber-300 hover:border-pink-400 transition-all shadow-md hover:shadow-xl hover:scale-105 active:scale-95 cursor-pointer max-w-sm mx-auto flex flex-col items-center justify-center ${
+              className={`group relative p-8 rounded-3xl bg-white/95 border-2 border-dashed border-amber-400 hover:border-pink-400 transition-all shadow-md hover:shadow-xl hover:scale-105 active:scale-95 cursor-pointer max-w-sm mx-auto flex flex-col items-center justify-center ${
                 isAnimating ? 'animate-wiggle' : ''
               }`}
             >
               <div className="text-7xl sm:text-8xl transition-transform group-hover:scale-110 drop-shadow-md select-none">
                 🥠
               </div>
-              <div className="mt-4 font-heading font-extrabold text-sm text-pink-600 group-hover:text-purple-600 flex items-center gap-1.5">
+              <div className="mt-4 font-heading font-black text-sm text-pink-700 group-hover:text-purple-700 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-amber-500 animate-spin" />
                 <span>TAP TO CRACK OPEN</span>
                 <Sparkles className="w-4 h-4 text-pink-500 animate-spin" />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">
+              <p className="text-[11px] text-slate-700 font-bold mt-1">
                 A wholesome fortune or spicy bestie dare awaits you
               </p>
             </button>
@@ -167,14 +167,14 @@ export function PookieFortuneCookie() {
         ) : (
           <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in zoom-in-95 duration-300">
             {/* Cracked Cookie & Slip */}
-            <div className="p-6 sm:p-7 rounded-2xl bg-white border-2 border-pink-300/80 shadow-lg relative overflow-hidden">
+            <div className="p-6 sm:p-7 rounded-2xl bg-white border-2 border-pink-300 shadow-lg relative overflow-hidden">
               <div className="flex items-center justify-between mb-3 text-xs">
                 <span className="px-2.5 py-1 rounded-full bg-pink-100 text-pink-700 font-extrabold text-[10px] tracking-wide uppercase flex items-center gap-1">
                   <span>{currentFortune.emoji}</span>
                   <span>{currentFortune.category}</span>
                 </span>
-                <span className="text-[11px] text-slate-500 font-medium">
-                  Lucky Color: <strong className="text-pink-600">{currentFortune.luckyColor}</strong>
+                <span className="text-[11px] text-slate-700 font-bold">
+                  Lucky Color: <strong className="text-pink-700 font-black">{currentFortune.luckyColor}</strong>
                 </span>
               </div>
 

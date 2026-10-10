@@ -203,18 +203,16 @@ adminRouter.get('/anonymous-responses', async (req: AuthenticatedRequest, res: R
           id: r.id,
           experience_id: r.experienceId,
           experience_title: exp?.title || 'Anonymous Experience',
-          privacy_mode: exp?.privacyMode || 'mode_b',
+          privacy_mode: exp?.privacyMode || 'mode_a',
           answers: r.answers,
           moderation_status: r.moderationStatus,
           submitted_at: r.submittedAt.toISOString(),
-          has_disclosed_name: Boolean(r.identity),
-          disclosed_name: r.identity ? r.identity.responderName : undefined,
-          identity_note:
-            exp?.privacyMode === 'mode_b'
-              ? 'Platform Anonymous (Zero Identity Retained)'
-              : r.identity
-              ? 'Disclosed to Platform Only with Explicit Consent'
-              : 'Anonymous (No name provided)',
+          response_reference: r.responseReference,
+          has_disclosed_name: Boolean(r.identity && r.identity.responderName),
+          disclosed_name: r.identity ? r.identity.responderName : 'Anonymous',
+          identity_note: r.identity
+            ? `Compulsory Safety Record: "${r.identity.responderName}" (Admin-Only Visibility)`
+            : 'Legacy record without compulsory name',
         };
       })
     );

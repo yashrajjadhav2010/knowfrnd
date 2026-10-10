@@ -18,48 +18,48 @@ const POOKIE_MOODS: MoodOption[] = [
     emoji: '🎀',
     label: 'Coquette Pookie',
     tagline: 'Soft, cute & wearing pink bows today',
-    color: 'text-pink-400',
-    bgActive: 'border-pink-500 bg-pink-500/15 ring-2 ring-pink-500',
+    color: 'text-pink-600',
+    bgActive: 'border-pink-500 bg-pink-100/80 ring-2 ring-pink-500',
   },
   {
     id: 'caffeinated',
     emoji: '☕',
     label: 'Caffeinated Chaos',
     tagline: '3 iced matchas deep and ready to conquer',
-    color: 'text-amber-400',
-    bgActive: 'border-amber-500 bg-amber-500/15 ring-2 ring-amber-500',
+    color: 'text-amber-700',
+    bgActive: 'border-amber-500 bg-amber-100/80 ring-2 ring-amber-500',
   },
   {
     id: 'main_character',
     emoji: '💅',
     label: 'Main Character',
     tagline: 'The world is literally my music video',
-    color: 'text-purple-400',
-    bgActive: 'border-purple-500 bg-purple-500/15 ring-2 ring-purple-500',
+    color: 'text-purple-700',
+    bgActive: 'border-purple-500 bg-purple-100/80 ring-2 ring-purple-500',
   },
   {
     id: 'lover',
     emoji: '💖',
     label: 'Certified Softie',
     tagline: 'Falling in love with fictional characters & besties',
-    color: 'text-rose-400',
-    bgActive: 'border-rose-500 bg-rose-500/15 ring-2 ring-rose-500',
+    color: 'text-rose-600',
+    bgActive: 'border-rose-500 bg-rose-100/80 ring-2 ring-rose-500',
   },
   {
     id: 'cozy',
     emoji: '🧸',
     label: 'Bed Burrito',
     tagline: 'Do not disturb, wrapped in 4 fluffy blankets',
-    color: 'text-cyan-400',
-    bgActive: 'border-cyan-500 bg-cyan-500/15 ring-2 ring-cyan-500',
+    color: 'text-cyan-700',
+    bgActive: 'border-cyan-500 bg-cyan-100/80 ring-2 ring-cyan-500',
   },
   {
     id: 'boba',
     emoji: '🧋',
     label: 'Boba Desperate',
     tagline: 'Needs brown sugar pearls or will cry',
-    color: 'text-emerald-400',
-    bgActive: 'border-emerald-500 bg-emerald-500/15 ring-2 ring-emerald-500',
+    color: 'text-emerald-700',
+    bgActive: 'border-emerald-500 bg-emerald-100/80 ring-2 ring-emerald-500',
   },
 ];
 
@@ -132,11 +132,11 @@ export function PookieVibeMeter() {
           <div>
             <h3 className="font-heading font-extrabold text-lg text-slate-900 flex items-center gap-1.5">
               <span>Daily Pookie Mood Check</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-pink-100 text-pink-600 font-bold border border-pink-300">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-pink-100 text-pink-700 font-extrabold border border-pink-300">
                 LIVE
               </span>
             </h3>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[11px] text-slate-700 font-medium">
               Tap how you're feeling right now & see your vibe
             </p>
           </div>
@@ -145,10 +145,10 @@ export function PookieVibeMeter() {
         {/* Audio Effects Toggle */}
         <button
           onClick={() => setSoundActive(sounds.toggleSound())}
-          className="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 transition-colors flex items-center gap-1 text-xs"
+          className="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 font-bold border border-pink-200 transition-colors flex items-center gap-1 text-xs"
           title="Toggle cute sound effects"
         >
-          {soundActive ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5 opacity-50" />}
+          {soundActive ? <Volume2 className="w-3.5 h-3.5 text-pink-600" /> : <VolumeX className="w-3.5 h-3.5 opacity-50" />}
           <span className="text-[10px] hidden sm:inline">{soundActive ? 'SFX On' : 'Muted'}</span>
         </button>
       </div>
@@ -161,7 +161,7 @@ export function PookieVibeMeter() {
             <button
               key={mood.id}
               onClick={() => handleSelectMood(mood)}
-              className={`p-3.5 rounded-2xl border text-left transition-all duration-200 group relative ${
+              className={`p-3.5 rounded-2xl border-2 text-left transition-all duration-200 group relative cursor-pointer ${
                 isSelected
                   ? mood.bgActive
                   : 'border-purple-100 bg-white hover:border-pink-300 hover:shadow-md hover:scale-[1.02]'
@@ -175,10 +175,10 @@ export function PookieVibeMeter() {
                   <span className="w-2 h-2 rounded-full bg-pink-500 animate-ping" />
                 )}
               </div>
-              <div className="font-heading font-bold text-xs text-slate-900">
+              <div className="font-heading font-black text-xs text-slate-900">
                 {mood.label}
               </div>
-              <p className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+              <p className="text-[10px] text-slate-700 font-semibold line-clamp-1 mt-0.5">
                 {mood.tagline}
               </p>
             </button>

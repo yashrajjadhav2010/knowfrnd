@@ -15,7 +15,8 @@ import {
   Share2,
   Check,
   Heart,
-  Wand2
+  Wand2,
+  User
 } from 'lucide-react';
 import { api } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
@@ -122,7 +123,7 @@ const CUTE_TEMPLATES = [
 export function CreatePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { isAuthenticated, switchRole } = useAuth();
+  const { user, isAuthenticated, switchRole } = useAuth();
 
   const [type, setType] = useState<ExperienceType>(
     (searchParams.get('type') as ExperienceType) || 'quiz'
@@ -130,6 +131,7 @@ export function CreatePage() {
 
   // Common fields
   const [title, setTitle] = useState('');
+  const [creatorName, setCreatorName] = useState(user?.public_display_name || '');
   const [description, setDescription] = useState('');
   const [theme, setTheme] = useState('violet');
   const [privacyMode, setPrivacyMode] = useState<'mode_a' | 'mode_b'>('mode_b');
@@ -225,6 +227,11 @@ export function CreatePage() {
       return;
     }
 
+    if (!creatorName.trim()) {
+      setError('Please provide your name as the Quiz Creator. Responders will see this on their screen!');
+      return;
+    }
+
     // Validation
     if (type === 'quiz') {
       if (questions.length < 3) {
@@ -267,6 +274,10 @@ export function CreatePage() {
         type,
         title: title.trim(),
         description: description.trim(),
+        creator_name: creatorName.trim(),
+        settings: {
+          creator_name: creatorName.trim(),
+        },
         theme,
         status,
         privacy_mode: privacyMode,
@@ -443,7 +454,7 @@ export function CreatePage() {
         {/* Basic Details */}
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-bold text-slate-900 mb-1.5">
               Title <span className="text-rose-500">*</span>
             </label>
             <input
@@ -458,12 +469,38 @@ export function CreatePage() {
                   ? 'My Anonymous Truth Box 💬'
                   : 'Oat Milk Matcha vs Cold Brew ☕'
               }
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-slate-50 dark:bg-[#0B0B12] border border-slate-200 dark:border-[#272542] text-slate-900 dark:text-white focus:outline-none focus:border-purple-500"
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-bold focus:outline-none focus:border-purple-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-bold text-slate-900 mb-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <span>Quiz Creator Name</span>
+                <span className="text-rose-500">*</span>
+              </span>
+              <span className="text-[10px] text-pink-700 font-extrabold uppercase bg-pink-100 px-2.5 py-0.5 rounded-full border border-pink-300">
+                Shown to Responders
+              </span>
+            </label>
+            <div className="relative">
+              <User className="w-4 h-4 text-purple-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                required
+                value={creatorName}
+                onChange={(e) => setCreatorName(e.target.value)}
+                placeholder="Enter your name (e.g. Alex, Sarah, Bestie Queen)..."
+                className="w-full pl-10 pr-3.5 py-2.5 text-xs rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-bold focus:outline-none focus:border-purple-500 placeholder:text-slate-400"
+              />
+            </div>
+            <p className="text-[11px] text-slate-700 font-semibold mt-1">
+              💖 Responders will see this clearly on their screen as: "Created with ❤️ by {creatorName.trim() || 'Your Name'}"
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-900 mb-1.5">
               Description / Kicker (Optional)
             </label>
             <textarea
@@ -471,52 +508,30 @@ export function CreatePage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Tell your friends what this is about..."
-              className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 dark:bg-[#0B0B12] border border-slate-200 dark:border-[#272542] text-slate-900 dark:text-white focus:outline-none focus:border-purple-500 resize-none"
+              className="w-full px-3.5 py-2 text-xs rounded-xl bg-slate-50 border-2 border-slate-200 text-slate-900 font-semibold focus:outline-none focus:border-purple-500 resize-none"
             />
           </div>
         </div>
 
         {/* PRIVACY MODE TOGGLE FOR ANONYMOUS */}
         {type === 'anonymous' && (
-          <div className="p-4 rounded-xl bg-purple-50/50 dark:bg-[#0B0B12] border border-purple-500/20 space-y-3">
+          <div className="p-4 rounded-xl bg-purple-50 border border-purple-200 space-y-3">
             <div className="flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-purple-400" />
-              <h4 className="font-heading font-bold text-xs text-slate-900 dark:text-white">
+              <ShieldAlert className="w-4 h-4 text-purple-700" />
+              <h4 className="font-heading font-black text-xs text-slate-900">
                 Privacy Mode Configuration
               </h4>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <label
-                className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                  privacyMode === 'mode_b'
-                    ? 'border-purple-500 bg-purple-500/10'
-                    : 'border-slate-200 dark:border-[#272542]'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-bold text-purple-400">Mode B: Full Anonymity</span>
-                  <input
-                    type="radio"
-                    name="privacy_mode"
-                    checked={privacyMode === 'mode_b'}
-                    onChange={() => setPrivacyMode('mode_b')}
-                    className="accent-purple-600"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Zero identity or names collected. Anonymous to both the creator and the platform.
-                </p>
-              </label>
-
-              <label
-                className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all ${
                   privacyMode === 'mode_a'
-                    ? 'border-pink-500 bg-pink-500/10'
-                    : 'border-slate-200 dark:border-[#272542]'
+                    ? 'border-pink-500 bg-pink-100/70 ring-2 ring-pink-400'
+                    : 'border-slate-200 bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-bold text-pink-400">Mode A: Admin-Audited</span>
+                  <span className="font-black text-pink-700">Mode A: Platform Safety Audited (Standard)</span>
                   <input
                     type="radio"
                     name="privacy_mode"
@@ -525,8 +540,30 @@ export function CreatePage() {
                     className="accent-pink-600"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400">
-                  Anonymous to creator. Responders may optionally disclose their name with explicit consent for platform moderation.
+                <p className="text-[11px] text-slate-700 font-medium">
+                  100% anonymous to the creator. Responder name is compulsory for safety & anti-harassment purposes, visible exclusively to administrators in the Admin Panel.
+                </p>
+              </label>
+
+              <label
+                className={`p-3.5 rounded-xl border-2 cursor-pointer transition-all ${
+                  privacyMode === 'mode_b'
+                    ? 'border-purple-500 bg-purple-100/70 ring-2 ring-purple-400'
+                    : 'border-slate-200 bg-white'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-black text-purple-700">Mode B: Supervised Moderation</span>
+                  <input
+                    type="radio"
+                    name="privacy_mode"
+                    checked={privacyMode === 'mode_b'}
+                    onChange={() => setPrivacyMode('mode_b')}
+                    className="accent-purple-600"
+                  />
+                </div>
+                <p className="text-[11px] text-slate-700 font-medium">
+                  Anonymous to the public creator. Verified responder name is audited in the platform admin panel for user safety.
                 </p>
               </label>
             </div>
@@ -535,20 +572,20 @@ export function CreatePage() {
 
         {/* QUIZ BUILDER */}
         {type === 'quiz' && (
-          <div className="space-y-6 pt-4 border-t border-slate-200 dark:border-[#272542]">
+          <div className="space-y-6 pt-4 border-t border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-heading font-bold text-sm text-slate-900 dark:text-white">
+                <h3 className="font-heading font-black text-sm text-slate-900">
                   Questions ({questions.length} / 30)
                 </h3>
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[11px] text-slate-700 font-bold">
                   Select the radio button next to the correct answer. The key stays completely hidden on our server.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={addQuestion}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white flex items-center gap-1 transition-colors"
+                className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1 transition-colors shadow-sm cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Question</span>
@@ -559,17 +596,17 @@ export function CreatePage() {
               {questions.map((q, qIdx) => (
                 <div
                   key={qIdx}
-                  className="p-4 rounded-xl border border-slate-200 dark:border-[#272542] bg-slate-50/50 dark:bg-[#0E0D17] space-y-3"
+                  className="p-4 rounded-xl border-2 border-slate-200 bg-slate-50 space-y-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-heading font-bold text-xs text-purple-500">
+                    <span className="font-heading font-black text-xs text-purple-700">
                       Question #{qIdx + 1}
                     </span>
                     {questions.length > 3 && (
                       <button
                         type="button"
                         onClick={() => removeQuestion(qIdx)}
-                        className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
+                        className="p-1 rounded text-slate-600 hover:text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -581,22 +618,22 @@ export function CreatePage() {
                     value={q.question_text}
                     onChange={(e) => updateQuestionText(qIdx, e.target.value)}
                     placeholder="e.g. What is my secret talent?"
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-white dark:bg-[#141324] border border-slate-200 dark:border-[#272542] text-slate-900 dark:text-white focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-white border-2 border-slate-200 text-slate-900 font-bold focus:outline-none focus:border-purple-500"
                   />
 
                   {/* Options */}
                   <div className="space-y-2 pt-1">
-                    <span className="text-[11px] font-semibold text-slate-400">
+                    <span className="text-[11px] font-black text-slate-800">
                       Answer Choices (Pick the correct one):
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {q.options.map((opt, optIdx) => (
                         <div
                           key={optIdx}
-                          className={`flex items-center gap-2 p-2 rounded-xl border text-xs transition-colors ${
+                          className={`flex items-center gap-2 p-2 rounded-xl border-2 text-xs transition-colors ${
                             q.correct_option_index === optIdx
-                              ? 'border-emerald-500 bg-emerald-500/10'
-                              : 'border-slate-200 dark:border-[#272542] bg-white dark:bg-[#141324]'
+                              ? 'border-emerald-500 bg-emerald-50 text-emerald-950 font-bold'
+                              : 'border-slate-200 bg-white text-slate-900 font-semibold'
                           }`}
                         >
                           <input
@@ -604,7 +641,7 @@ export function CreatePage() {
                             name={`correct_${qIdx}`}
                             checked={q.correct_option_index === optIdx}
                             onChange={() => setCorrectOption(qIdx, optIdx)}
-                            className="accent-emerald-500 cursor-pointer"
+                            className="accent-emerald-600 cursor-pointer"
                             title="Mark as correct answer"
                           />
                           <input
@@ -612,7 +649,7 @@ export function CreatePage() {
                             value={opt}
                             onChange={(e) => updateOptionText(qIdx, optIdx, e.target.value)}
                             placeholder={`Option ${optIdx + 1}`}
-                            className="w-full bg-transparent text-xs text-slate-900 dark:text-white focus:outline-none placeholder:text-slate-400"
+                            className="w-full bg-transparent text-xs text-slate-900 font-bold focus:outline-none placeholder:text-slate-400"
                           />
                         </div>
                       ))}

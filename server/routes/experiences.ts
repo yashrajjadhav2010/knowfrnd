@@ -110,6 +110,9 @@ experiencesRouter.get('/:slugOrId', async (req, res) => {
       owner = await dbGetUserByUid(exp.ownerUid);
     } catch {}
 
+    const expSettings = (exp.settings as any) || {};
+    const creatorDisplayName = expSettings.creator_name || owner?.displayName || 'Quiz Host';
+
     const questionsWithOpts = await dbGetQuestionsForExperience(exp.id);
     const questions = questionsWithOpts.map((q) => ({
       id: q.id,
@@ -167,8 +170,9 @@ experiencesRouter.get('/:slugOrId', async (req, res) => {
         status: exp.status,
         privacy_mode: exp.privacyMode,
         settings: exp.settings,
+        creator_name: creatorDisplayName,
         creator: {
-          public_display_name: owner?.displayName || 'Creator',
+          public_display_name: creatorDisplayName,
           username: owner?.username || 'user',
           avatar_url: owner?.avatarUrl || undefined,
         },
@@ -191,6 +195,7 @@ experiencesRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: 
       type,
       title,
       description = '',
+      creator_name,
       theme = 'pastel-pookie',
       status = 'published',
       privacy_mode = 'mode_b',
@@ -209,6 +214,10 @@ experiencesRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: 
 
     const expId = `exp_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
     const slug = slugify(title);
+
+    const resolvedCreatorName = typeof creator_name === 'string' && creator_name.trim() 
+      ? creator_name.trim().substring(0, 50) 
+      : (settings.creator_name || 'Bestie');
 
     if (type === 'quiz') {
       if (!Array.isArray(questions) || questions.length < 3 || questions.length > 30) {
@@ -247,6 +256,7 @@ experiencesRouter.post('/', requireAuth, async (req: AuthenticatedRequest, res: 
       status: status === 'draft' ? 'draft' : 'published',
       privacyMode: privacy_mode === 'mode_a' ? 'mode_a' : 'mode_b',
       settings: {
+        creator_name: resolvedCreatorName,
         allow_nickname: settings.allow_nickname ?? true,
         show_leaderboard: settings.show_leaderboard ?? true,
         retake_allowed: settings.retake_allowed ?? true,

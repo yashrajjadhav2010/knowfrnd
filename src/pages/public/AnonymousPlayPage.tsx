@@ -9,7 +9,8 @@ import {
   CheckCircle2, 
   Share2, 
   ShieldAlert, 
-  AlertCircle 
+  AlertCircle,
+  User
 } from 'lucide-react';
 import { api } from '../../lib/api';
 import { BRAND } from '../../config/brand';
@@ -79,14 +80,20 @@ export function AnonymousPlayPage() {
       }
     }
 
+    if (!responderName.trim()) {
+      setError('Your name is compulsory for safety and admin verification before sending.');
+      sounds.playPop();
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
     try {
       const res = await api.submitAnonymous(experience.id, {
         answers: formattedAnswers,
-        responder_name: responderName.trim() || undefined,
-        consent_given: consentGiven,
+        responder_name: responderName.trim(),
+        consent_given: true,
       });
 
       setResponseRef(res.response_reference);
@@ -193,45 +200,39 @@ export function AnonymousPlayPage() {
     <div className="max-w-xl mx-auto px-4 py-12 min-h-[85vh]">
       <div className="p-6 sm:p-8 rounded-3xl bg-white border-2 border-pink-200 shadow-xl space-y-6">
         {/* Header */}
-        <div className="space-y-2 text-center">
+        <div className="space-y-3 text-center">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-pink-400 to-purple-500 text-white flex items-center justify-center mx-auto shadow-md shadow-pink-500/20 text-2xl">
             💌
           </div>
-          <span className="text-[11px] font-bold uppercase tracking-wider text-pink-600">
-            BY {experience.creator?.public_display_name}
-          </span>
-          <h1 className="font-heading text-2xl font-black text-slate-900">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-100 border border-pink-300 text-pink-900 text-xs font-black shadow-sm mx-auto">
+            <span>💌 Anonymous Box for <strong className="text-pink-950 underline decoration-pink-400">{experience.creator_name || experience.creator?.public_display_name || 'Friend'}</strong></span>
+          </div>
+          <h1 className="font-heading text-2xl font-black text-slate-900 leading-tight">
             {experience.title}
           </h1>
           {experience.description && (
-            <p className="text-xs text-slate-600 font-medium">
+            <p className="text-xs text-slate-800 font-semibold max-w-md mx-auto">
               {experience.description}
             </p>
           )}
         </div>
 
-        {/* Transparent Privacy Notice */}
-        <div className="p-4 rounded-2xl bg-pink-50/70 border border-pink-200 text-xs space-y-2">
-          <div className="flex items-center gap-2 text-emerald-400 font-semibold">
-            <ShieldCheck className="w-4 h-4 shrink-0" />
-            <span>Privacy Guarantee</span>
+        {/* Transparent Privacy & Safety Notice */}
+        <div className="p-4 rounded-2xl bg-pink-50 border-2 border-pink-200 text-xs space-y-2">
+          <div className="flex items-center gap-2 text-emerald-700 font-bold">
+            <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
+            <span>Safety & Privacy Dual-Protection</span>
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-            {isModeB ? (
-              <>
-                <strong className="text-slate-800 dark:text-slate-200">Mode B Active:</strong> This experience is completely anonymous to both the creator and the platform. No accounts, names, or device fingerprints are retained.
-              </>
-            ) : (
-              <>
-                <strong className="text-slate-800 dark:text-slate-200">Mode A Active:</strong> 100% anonymous to the creator. You may optionally provide a name for platform moderation; the creator will NEVER be able to see it.
-              </>
-            )}
+          <p className="text-[11px] text-slate-700 font-medium leading-relaxed">
+            <strong className="text-slate-900 font-bold">100% Secret to Creator:</strong> The creator of this question box will NEVER see who answered.
+            <br />
+            <strong className="text-slate-900 font-bold">Compulsory Safety Audit:</strong> For platform safety, anti-bullying prevention, and administrator panel review, your responder name is required and strictly audited by the platform administrator.
           </p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+          <div className="p-3 rounded-xl bg-rose-50 border-2 border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
             <span>{error}</span>
           </div>
         )}
@@ -240,7 +241,7 @@ export function AnonymousPlayPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {questions.map((q: any, idx: number) => (
             <div key={q.id} className="space-y-1.5">
-              <label className="block text-xs font-semibold text-slate-800 dark:text-slate-200">
+              <label className="block text-xs font-bold text-slate-900">
                 {idx + 1}. {q.question_text}{' '}
                 {q.is_required && <span className="text-rose-500">*</span>}
               </label>
@@ -250,58 +251,60 @@ export function AnonymousPlayPage() {
                 value={answers[q.id] || ''}
                 onChange={(e) => handleTextChange(q.id, e.target.value)}
                 placeholder="Type your honest answer here..."
-                className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-slate-50 dark:bg-[#0B0B12] border border-slate-200 dark:border-[#272542] text-slate-900 dark:text-white placeholder:text-slate-500 focus:outline-none focus:border-pink-500 resize-none"
+                className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-slate-50 border-2 border-pink-100 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-pink-500 resize-none font-medium"
               />
             </div>
           ))}
 
-          {/* Mode A Optional Name Field with Consent Notice */}
-          {!isModeB && (
-            <div className="p-3.5 rounded-xl bg-pink-950/10 border border-pink-500/20 space-y-2.5">
-              <label className="block text-xs font-semibold text-pink-300">
-                Optional Disclosed Name (Platform Moderation Only)
+          {/* Compulsory Responder Name Field for Safety & Admin Audit */}
+          <div className="p-4 rounded-2xl bg-pink-50 border-2 border-pink-300 space-y-2.5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs font-black text-pink-900 flex items-center gap-1.5">
+                <User className="w-4 h-4 text-pink-600" />
+                <span>Your Name <span className="text-rose-500">*</span></span>
               </label>
-              <input
-                type="text"
-                value={responderName}
-                onChange={(e) => setResponderName(e.target.value)}
-                placeholder="Optional: Your name (Creator will NEVER see this)"
-                className="w-full px-3 py-2 text-xs rounded-xl bg-[#0B0B12] border border-[#272542] text-white focus:outline-none focus:border-pink-500"
-              />
-              {responderName.trim().length > 0 && (
-                <label className="flex items-start gap-2 cursor-pointer text-[11px] text-slate-400">
-                  <input
-                    type="checkbox"
-                    checked={consentGiven}
-                    onChange={(e) => setConsentGiven(e.target.checked)}
-                    required
-                    className="accent-pink-500 mt-0.5"
-                  />
-                  <span>
-                    I understand this name is stored separately and accessible only to platform administrators for safety investigations.
-                  </span>
-                </label>
-              )}
+              <span className="text-[10px] font-black uppercase tracking-wider text-pink-800 bg-pink-200/90 px-2.5 py-0.5 rounded-full border border-pink-300">
+                Compulsory for Safety
+              </span>
             </div>
-          )}
+
+            <input
+              type="text"
+              required
+              value={responderName}
+              onChange={(e) => setResponderName(e.target.value)}
+              placeholder="Enter your real name (Admin Panel audit only)..."
+              className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-white border-2 border-pink-200 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-pink-500 font-bold"
+            />
+
+            <div className="text-[10px] text-slate-700 font-medium space-y-1 bg-white/70 p-2.5 rounded-xl border border-pink-200/60">
+              <div className="flex items-center gap-1.5 text-pink-800 font-bold">
+                <ShieldCheck className="w-3.5 h-3.5 text-pink-600" />
+                <span>Safety Compliance Policy:</span>
+              </div>
+              <p>
+                Your name is recorded for administrator review in the admin panel to prevent harassment, ensure responder accountability, and satisfy safety guidelines. The creator cannot see this name.
+              </p>
+            </div>
+          </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-3.5 rounded-xl text-xs font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-purple-600 text-white shadow-lg shadow-pink-600/20 hover:opacity-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3.5 rounded-xl text-xs font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-purple-600 text-white shadow-lg shadow-pink-600/20 hover:opacity-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer font-black"
           >
             <Send className="w-4 h-4" />
             <span>{submitting ? 'Sending Secretly...' : 'Send Anonymous Answer'}</span>
           </button>
         </form>
 
-        <div className="pt-4 border-t border-slate-200 dark:border-[#272542] flex items-center justify-between text-xs text-slate-400">
+        <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-slate-800 font-bold">
           <span>{BRAND.poweredBy}</span>
           <button
             onClick={() => setReportModalOpen(true)}
-            className="hover:text-rose-400 flex items-center gap-1 transition-colors"
+            className="hover:text-rose-600 flex items-center gap-1 transition-colors text-slate-700 cursor-pointer"
           >
-            <ShieldAlert className="w-3.5 h-3.5" />
+            <ShieldAlert className="w-3.5 h-3.5 text-slate-700" />
             <span>Report</span>
           </button>
         </div>
